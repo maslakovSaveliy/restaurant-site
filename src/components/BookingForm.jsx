@@ -1,82 +1,80 @@
 import React, { useState } from "react";
-import NumberFormat from "react-number-format";
 import { useFetching } from "../hooks/useFetching";
 import Service from "../API/Service";
+import { useForm } from "react-hook-form";
 const BookingForm = ({ setModalState }) => {
-  let date = new Date();
-  const [formValues, setFormValues] = useState({
-    name: "",
-    surname: "",
-    date: "",
-    number: "",
+  const date = new Date();
+  const [fetchMsg, isLoading, error] = useFetching(async (data) => {
+    await Service.sendMessage(data);
   });
-  const [fetchMsg, isMsgLoading, msgError] = useFetching(async () => {
-    await Service.sendMessage(formValues);
-  });
-  const formSubmit = (e) => {
-    e.preventDefault();
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+    reset,
+  } = useForm({ mode: "onBlur" });
+  const formSubmit = (data) => {
+    fetchMsg(data);
+    reset();
     setModalState(false);
-    console.log(formValues);
-    fetchMsg();
-    setFormValues({
-      name: "",
-      surname: "",
-      date: "",
-      number: "",
-    });
   };
   return (
-    <form onSubmit={(e) => formSubmit(e)}>
+    <form onSubmit={handleSubmit(formSubmit)}>
       <label>
-        Имя
+        First name
         <input
-          name="name"
-          value={formValues.name}
-          type="text"
-          placeholder="Bob"
-          onChange={(e) =>
-            setFormValues({ ...formValues, name: e.target.value })
-          }
+          {...register("firstName", {
+            required: "The field is empty",
+          })}
         />
+        <div>
+          {errors?.firstName && <p>{errors?.firstName?.message || "Error!"}</p>}
+        </div>
       </label>
       <label>
-        Фамилия
+        Last name
         <input
-          name="surname"
-          value={formValues.surname}
-          type="text"
-          placeholder="Marley"
-          onChange={(e) =>
-            setFormValues({ ...formValues, surname: e.target.value })
-          }
+          {...register("lastName", {
+            required: "The field is empty",
+          })}
         />
+        <div>
+          {errors?.lastName && <p>{errors?.lastName?.message || "Error!"}</p>}
+        </div>
       </label>
       <label>
-        Дата
+        Date
         <input
+          {...register("date", {
+            required: "The field is empty",
+          })}
           type="date"
-          name="date"
-          value={formValues.date}
           min={date.toISOString().split("T")[0]}
           max="2023-03-01"
-          onChange={(e) =>
-            setFormValues({ ...formValues, date: e.target.value })
-          }
         />
+        <div>{errors?.date && <p>{errors?.date?.message || "Error!"}</p>}</div>
       </label>
       <label>
-        Номер телефона
-        <NumberFormat
-          placeholder="+7 (923) 456-7890"
-          value={formValues.number}
-          format="+7 (###) ###-####"
-          mask="_"
-          onChange={(e) =>
-            setFormValues({ ...formValues, number: e.target.value })
-          }
+        Phone Number
+        <input
+          {...register("number", {
+            required: "The field is empty",
+            pattern: {
+              value: /^[\d\+][\d\(\)\ -]{4,14}\d$/,
+              message: "invalid pattern",
+            },
+            minLength: { value: 11, message: "Min length 11" },
+            maxLength: { value: 11, message: "Max length 11" },
+          })}
+          placeholder="89234567890"
         />
+        <div>
+          {errors?.number && <p>{errors?.number?.message || "Error!"}</p>}
+        </div>
       </label>
-      <button type="submit">book a table</button>
+      <button type="submit" disabled={!isValid}>
+        book a table
+      </button>
     </form>
   );
 };

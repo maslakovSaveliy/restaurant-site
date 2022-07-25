@@ -1,8 +1,8 @@
 import axios from "axios";
 export default class Service {
   static async sendMessage(formValues) {
-    const UTFname = encodeURIComponent(formValues.name);
-    const UTFsurname = encodeURIComponent(formValues.surname);
+    const UTFname = encodeURIComponent(formValues.firstName);
+    const UTFsurname = encodeURIComponent(formValues.lastName);
     const UTFdate = encodeURIComponent(formValues.date);
     const UTFnumber = encodeURIComponent(formValues.number);
     axios.get(
