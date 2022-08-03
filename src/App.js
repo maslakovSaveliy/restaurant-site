@@ -10,7 +10,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar setModalState={setModal} />
-      <AppRouter />
+      <AppRouter setModalState={setModal} />
       <Modal visible={modal} setVisible={setModal}>
         <BookingForm setModalState={setModal} />
       </Modal>

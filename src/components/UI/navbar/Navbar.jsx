@@ -31,6 +31,14 @@ const Navbar = ({ setModalState }) => {
             Events
           </NavLink>
         </div>
+        <div className="navbar__item">
+          <NavLink
+            to="/reviews"
+            style={({ isActive }) => ({ color: isActive ? "white" : "gray" })}
+          >
+            Reviews
+          </NavLink>
+        </div>
       </div>
       <button
         className="navbar__item booking"
