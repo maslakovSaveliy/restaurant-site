@@ -108,3 +108,50 @@
   flex-direction: column;
   margin-bottom: 30px;
 }
+.about {
+  display: flex;
+  color: white;
+  flex-direction: column;
+  align-items: center;
+}
+.about img {
+  margin: 20px;
+}
+.feedback {
+  min-height: 100vh;
+  width: 100%;
+  padding: 10%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.feedback form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80%;
+  width: 60%;
+  box-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+.feedback form label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.feedback form input {
+  width: 200px;
+  height: 30px;
+  padding: 7px;
+  border: none;
+}
+.feedback form textarea {
+  width: 60%;
+  min-height: 100px;
+  padding: 7px;
+}
+.feedback p {
+  color: red;
+}

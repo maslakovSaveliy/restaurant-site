@@ -5,6 +5,7 @@ import Menu from "../pages/Menu";
 import Events from "../pages/Events";
 import Reviews from "../pages/Reviews";
 import Error from "../pages/Error";
+import Feedback from "../pages/Feedback";
 const AppRouter = ({ setModalState }) => {
   return (
     <Routes>
@@ -15,6 +16,7 @@ const AppRouter = ({ setModalState }) => {
         element={<Events setModalState={setModalState} />}
       />
       <Route path="/reviews" element={<Reviews />} />
+      <Route path="/feedback" element={<Feedback />} />
       <Route path="/*" element={<Error />} />
     </Routes>
   );
