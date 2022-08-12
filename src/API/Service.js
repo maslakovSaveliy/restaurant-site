@@ -9,10 +9,10 @@ export default class Service {
       `https://api.telegram.org/bot5530618039:AAHz04oS2G7n4s4xVHX3WLBZdV7n86wx4O0/sendMessage?chat_id=5434100705&text=${UTFname}%20${UTFsurname}%20${UTFdate}%20${UTFnumber}`
     );
   }
-  static async getComments() {
+  static async getComments(limit, page) {
     const response = await axios.get(
       "https://jsonplaceholder.typicode.com/comments",
-      { params: { _limit: 10 } }
+      { params: { _limit: limit, _page: page } }
     );
     return response;
   }

@@ -5,7 +5,7 @@ import MyButton from "../components/UI/button/MyButton";
 import { Context } from "../context/Context";
 import { Circles } from "react-loader-spinner";
 const Feedback = () => {
-  const { addFeedback, reviews } = useContext(Context);
+  const { addFeedback } = useContext(Context);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate(true);
   const submit = (data) => {
@@ -79,7 +79,9 @@ const Feedback = () => {
             {errors?.body && <p>{errors?.body?.message || "Error!"}</p>}
           </div>
         </label>
-        <MyButton type="submit">Send</MyButton>
+        <MyButton disabled={!isValid} type="submit">
+          Send
+        </MyButton>
       </form>
       {isLoading && <Circles color="white" />}
     </div>

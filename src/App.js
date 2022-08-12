@@ -8,19 +8,25 @@ import { useState, useEffect } from "react";
 import Service from "./API/Service";
 import { useFetching } from "./hooks/useFetching.js";
 import { Context } from "./context/Context";
+import { getPageCount } from "./utils/pages";
 function App() {
   const [modal, setModal] = useState(false);
   const [reviews, setRewiews] = useState([]);
-  const [fetchReviews, isLoading, error] = useFetching(async () => {
-    const response = await Service.getComments();
-    setRewiews(response.data);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
+  const [fetchReviews, isLoading, error] = useFetching(async (page, limit) => {
+    const response = await Service.getComments(page, limit);
+    setRewiews([...reviews, ...response.data]);
+    const totalCount = response.headers["x-total-count"];
+    setTotalPages(getPageCount(totalCount, limit));
   });
   const addFeedback = (feedback) => {
     setRewiews([...reviews, feedback]);
   };
   useEffect(() => {
-    fetchReviews();
-  }, []);
+    fetchReviews(page, limit);
+  }, [page, limit]);
   return (
     <Context.Provider
       value={{
@@ -29,6 +35,11 @@ function App() {
         fetchReviews,
         isLoading,
         error,
+        page,
+        totalPages,
+        setPage,
+        limit,
+        setLimit,
       }}
     >
       <BrowserRouter>
