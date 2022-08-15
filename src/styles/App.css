@@ -156,3 +156,31 @@
 .feedback p {
   color: red;
 }
+.ScrollToTop {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  background: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  cursor: pointer;
+}
+.ScrollToTop.enter-active {
+  animation: showBtn 0.5s forwards;
+}
+.ScrollToTop.exit-active {
+  animation: showBtn 0.5s reverse;
+}
+@keyframes showBtn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

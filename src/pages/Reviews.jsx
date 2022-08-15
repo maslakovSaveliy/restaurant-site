@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import Service from "../API/Service";
 import { useNavigate } from "react-router-dom";
-import { useFetching } from "../hooks/useFetching";
 import Review from "../components/Review";
 import MyButton from "../components/UI/button/MyButton";
 import StickyTitle from "../components/UI/stickTitle/StickyTitle";
@@ -9,6 +7,8 @@ import { Circles } from "react-loader-spinner";
 import { Context } from "../context/Context";
 import { useObserver } from "../hooks/useObserver";
 import MySelect from "../components/UI/select/MySelect";
+import ScrollToTop from "../components/UI/scrollToTop/ScrollToTop";
+import { CSSTransition } from "react-transition-group";
 const Reviews = () => {
   const {
     reviews,
@@ -20,9 +20,24 @@ const Reviews = () => {
     limit,
     setLimit,
   } = useContext(Context);
+  const [toTopBtn, setToTopBtn] = useState(false);
   const navigate = useNavigate(true);
-  const ref = useRef();
-  useObserver(ref, page < totalPages, isLoading, () => {
+  const lastElement = useRef();
+  const firstElement = useRef();
+  const observer = useRef();
+  useEffect(() => {
+    if (observer.current) observer.current.disconnect();
+    var cb = function (entries, observer) {
+      if (entries[0].isIntersecting) {
+        setToTopBtn(false);
+      } else {
+        setToTopBtn(true);
+      }
+    };
+    observer.current = new IntersectionObserver(cb);
+    observer.current.observe(firstElement.current);
+  }, []);
+  useObserver(lastElement, page < totalPages, isLoading, () => {
     setPage(page + 1);
   });
   return (
@@ -32,7 +47,7 @@ const Reviews = () => {
       ) : (
         <>
           <StickyTitle>Reviews page</StickyTitle>
-          <div style={{ marginTop: "20px" }}>
+          <div ref={firstElement} style={{ marginTop: "20px" }}>
             <MyButton onClick={() => navigate("/feedback")}>Feedback</MyButton>
           </div>
           <div className="reviews">
@@ -44,8 +59,6 @@ const Reviews = () => {
                 { name: "5", value: 5 },
                 { name: "10", value: 10 },
                 { name: "25", value: 25 },
-                { name: "50", value: 50 },
-                { name: "All", value: -1 },
               ]}
             />
             {reviews.map((review, index) => (
@@ -56,12 +69,20 @@ const Reviews = () => {
                 key={index}
               />
             ))}
-            <div style={{ width: "100%", height: "1px" }} ref={ref} />
+            <div style={{ width: "100%", height: "1px" }} ref={lastElement} />
             {isLoading && (
               <div style={{ height: "100vh" }}>
                 <Circles color="white" />
               </div>
             )}
+            <CSSTransition
+              in={toTopBtn}
+              timeout={500}
+              mountOnEnter
+              unmountOnExit
+            >
+              <ScrollToTop cl="ScrollToTop" />
+            </CSSTransition>
           </div>
         </>
       )}
