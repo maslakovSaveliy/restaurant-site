@@ -10,6 +10,15 @@ import { useFetching } from "./hooks/useFetching.js";
 import { Context } from "./context/Context";
 import { getPageCount } from "./utils/pages";
 function App() {
+  const [isAuth, setIsAuth] = useState(false);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  useEffect(() => {
+    if (localStorage.getItem("auth")) {
+      setIsAuth(true);
+    }
+    setIsLoadingAuth(false);
+    console.log(isAuth);
+  }, [isAuth]);
   const [modal, setModal] = useState(false);
   const [reviews, setRewiews] = useState([]);
   const [page, setPage] = useState(1);
@@ -40,6 +49,9 @@ function App() {
         setPage,
         limit,
         setLimit,
+        isAuth,
+        setIsAuth,
+        isLoadingAuth,
       }}
     >
       <BrowserRouter>

@@ -11,9 +11,9 @@ const Feedback = () => {
   const submit = (data) => {
     setIsLoading(true);
     const fb = {
-      name: data.name,
+      name: localStorage.getItem("name"),
       body: data.body,
-      email: data.email,
+      email: localStorage.getItem("email"),
     };
     addFeedback(fb);
     reset();
@@ -29,36 +29,6 @@ const Feedback = () => {
   return (
     <div className="feedback">
       <form onSubmit={handleSubmit(submit)}>
-        <label>
-          Your name:
-          <input
-            type="text"
-            placeholder="Bob Marley"
-            {...register("name", {
-              required: "The field is empty",
-            })}
-          />
-          <div>
-            {errors?.name && <p>{errors?.name?.message || "Error!"}</p>}
-          </div>
-        </label>
-        <label>
-          Your email:
-          <input
-            type="text"
-            placeholder="test@gmail.com"
-            {...register("email", {
-              required: "The field is empty",
-              pattern: {
-                value: /^\S+@\S+$/i,
-                message: "Please leave a real email",
-              },
-            })}
-          />
-          <div>
-            {errors?.email && <p>{errors?.email?.message || "Error!"}</p>}
-          </div>
-        </label>
         <label>
           Feedback:
           <textarea

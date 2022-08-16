@@ -1,23 +1,37 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import About from "../pages/About";
 import Menu from "../pages/Menu";
 import Events from "../pages/Events";
 import Reviews from "../pages/Reviews";
 import Error from "../pages/Error";
 import Feedback from "../pages/Feedback";
-const AppRouter = ({ setModalState }) => {
-  return (
+import { Context } from "../context/Context";
+import { useContext } from "react";
+import { Circles } from "react-loader-spinner";
+import { privateRoutes, publicRoutes } from "../router/routes";
+const AppRouter = () => {
+  const { isAuth, isLoadingAuth } = useContext(Context);
+  if (isLoadingAuth) {
+    return (
+      <div style={{ minHeight: "100vh" }}>
+        <Circles color="white" />
+      </div>
+    );
+  }
+  return isAuth ? (
     <Routes>
-      <Route path="/" element={<About />} />
-      <Route path="/menu" element={<Menu />} />
-      <Route
-        path="/events"
-        element={<Events setModalState={setModalState} />}
-      />
-      <Route path="/reviews" element={<Reviews />} />
-      <Route path="/feedback" element={<Feedback />} />
-      <Route path="/*" element={<Error />} />
+      {privateRoutes.map((route, index) => (
+        <Route path={route.path} element={<route.element />} key={index} />
+      ))}
+      <Route path="/auth" element={<Navigate to="/feedback" />} />
+    </Routes>
+  ) : (
+    <Routes>
+      {publicRoutes.map((route, index) => (
+        <Route path={route.path} element={<route.element />} key={index} />
+      ))}
+      <Route path="/feedback" element={<Navigate to="/auth" />} />
     </Routes>
   );
 };

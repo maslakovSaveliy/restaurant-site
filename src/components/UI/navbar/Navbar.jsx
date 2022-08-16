@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { Context } from "../../../context/Context";
+import MyButton from "../button/MyButton";
 const Navbar = ({ setModalState }) => {
+  const { setIsAuth } = useContext(Context);
+  const logout = () => {
+    setIsAuth(false);
+    localStorage.removeItem("auth");
+  };
   return (
     <div className="navbar">
       <div className="navbar__content">
@@ -38,6 +45,9 @@ const Navbar = ({ setModalState }) => {
           >
             Reviews
           </NavLink>
+        </div>
+        <div className="navbar__item">
+          <MyButton onClick={logout}>Log out</MyButton>
         </div>
       </div>
       <button

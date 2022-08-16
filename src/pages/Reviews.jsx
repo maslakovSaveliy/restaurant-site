@@ -48,7 +48,7 @@ const Reviews = () => {
         <>
           <StickyTitle>Reviews page</StickyTitle>
           <div ref={firstElement} style={{ marginTop: "20px" }}>
-            <MyButton onClick={() => navigate("/feedback")}>Feedback</MyButton>
+            <MyButton onClick={() => navigate("/auth")}>Feedback</MyButton>
           </div>
           <div className="reviews">
             <MySelect
