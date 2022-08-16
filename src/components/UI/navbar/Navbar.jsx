@@ -47,7 +47,9 @@ const Navbar = ({ setModalState }) => {
           </NavLink>
         </div>
         <div className="navbar__item">
-          <MyButton onClick={logout}>Log out</MyButton>
+          <MyButton style={{ borderRadius: "10px" }} onClick={logout}>
+            Log out
+          </MyButton>
         </div>
       </div>
       <button

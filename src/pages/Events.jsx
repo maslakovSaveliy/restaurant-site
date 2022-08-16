@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Event from "../components/Event";
 import StickyTitle from "../components/UI/stickTitle/StickyTitle";
-const Events = ({ setModalState }) => {
+const Events = () => {
   const [events, setEvents] = useState([
     {
       title: "event1",
@@ -42,7 +42,6 @@ const Events = ({ setModalState }) => {
             body={event.body}
             key={index}
             id={index + 1}
-            setModalState={setModalState}
           />
         ))}
       </div>
