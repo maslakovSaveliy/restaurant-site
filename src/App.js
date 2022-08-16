@@ -4,12 +4,30 @@ import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./components/AppRouter";
 import Modal from "./components/UI/Modal/Modal";
 import BookingForm from "./components/BookingForm";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Service from "./API/Service";
 import { useFetching } from "./hooks/useFetching.js";
 import { Context } from "./context/Context";
 import { getPageCount } from "./utils/pages";
+import ScrollToTop from "./components/UI/scrollToTop/ScrollToTop";
+import { CSSTransition } from "react-transition-group";
 function App() {
+  const [toTopBtn, setToTopBtn] = useState(false);
+  const firstElement = useRef();
+  const observer = useRef();
+  useEffect(() => {
+    if (observer.current) observer.current.disconnect();
+    var cb = function (entries, observer) {
+      if (entries[0].isIntersecting) {
+        setToTopBtn(false);
+      } else {
+        setToTopBtn(true);
+      }
+    };
+    observer.current = new IntersectionObserver(cb);
+    observer.current.observe(firstElement.current);
+  }, []);
+
   const [isAuth, setIsAuth] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   useEffect(() => {
@@ -56,11 +74,15 @@ function App() {
       }}
     >
       <BrowserRouter>
+        <div ref={firstElement}></div>
         <Navbar setModalState={setModal} />
         <AppRouter setModalState={setModal} />
         <Modal visible={modal} setVisible={setModal}>
           <BookingForm setModalState={setModal} />
         </Modal>
+        <CSSTransition in={toTopBtn} timeout={500} mountOnEnter unmountOnExit>
+          <ScrollToTop cl="ScrollToTop" />
+        </CSSTransition>
       </BrowserRouter>
     </Context.Provider>
   );

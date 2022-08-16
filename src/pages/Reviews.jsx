@@ -7,8 +7,6 @@ import { Circles } from "react-loader-spinner";
 import { Context } from "../context/Context";
 import { useObserver } from "../hooks/useObserver";
 import MySelect from "../components/UI/select/MySelect";
-import ScrollToTop from "../components/UI/scrollToTop/ScrollToTop";
-import { CSSTransition } from "react-transition-group";
 const Reviews = () => {
   const {
     reviews,
@@ -20,23 +18,8 @@ const Reviews = () => {
     limit,
     setLimit,
   } = useContext(Context);
-  const [toTopBtn, setToTopBtn] = useState(false);
   const navigate = useNavigate(true);
   const lastElement = useRef();
-  const firstElement = useRef();
-  const observer = useRef();
-  useEffect(() => {
-    if (observer.current) observer.current.disconnect();
-    var cb = function (entries, observer) {
-      if (entries[0].isIntersecting) {
-        setToTopBtn(false);
-      } else {
-        setToTopBtn(true);
-      }
-    };
-    observer.current = new IntersectionObserver(cb);
-    observer.current.observe(firstElement.current);
-  }, []);
   useObserver(lastElement, page < totalPages, isLoading, () => {
     setPage(page + 1);
   });
@@ -47,7 +30,7 @@ const Reviews = () => {
       ) : (
         <>
           <StickyTitle>Reviews page</StickyTitle>
-          <div ref={firstElement} style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "20px" }}>
             <MyButton onClick={() => navigate("/auth")}>Feedback</MyButton>
           </div>
           <div className="reviews">
@@ -75,14 +58,6 @@ const Reviews = () => {
                 <Circles color="white" />
               </div>
             )}
-            <CSSTransition
-              in={toTopBtn}
-              timeout={500}
-              mountOnEnter
-              unmountOnExit
-            >
-              <ScrollToTop cl="ScrollToTop" />
-            </CSSTransition>
           </div>
         </>
       )}
