@@ -35,7 +35,6 @@ function App() {
       setIsAuth(true);
     }
     setIsLoadingAuth(false);
-    console.log(isAuth);
   }, [isAuth]);
   const [modal, setModal] = useState(false);
   const [reviews, setRewiews] = useState([]);

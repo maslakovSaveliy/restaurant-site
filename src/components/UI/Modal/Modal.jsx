@@ -1,16 +1,14 @@
 import React from "react";
-import cl from "./Modal.module.css";
+import { CSSTransition } from "react-transition-group";
 const Modal = ({ children, visible, setVisible }) => {
-  const rootClasses = [cl.modal];
-  if (visible) {
-    rootClasses.push(cl.active);
-  }
   return (
-    <div className={rootClasses.join(" ")} onClick={() => setVisible(false)}>
-      <div onClick={(e) => e.stopPropagation()} className={cl.modalContent}>
-        {children}
+    <CSSTransition in={visible} mountOnEnter unmountOnExit timeout={500}>
+      <div className="modal" onClick={() => setVisible(false)}>
+        <div onClick={(e) => e.stopPropagation()} className="modalContent">
+          {children}
+        </div>
       </div>
-    </div>
+    </CSSTransition>
   );
 };
 export default Modal;

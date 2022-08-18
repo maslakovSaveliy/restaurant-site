@@ -30,6 +30,11 @@ const Reviews = () => {
       ) : (
         <>
           <StickyTitle>Reviews page</StickyTitle>
+          {isLoading && (
+            <div style={{ height: "100vh" }}>
+              <Circles color="white" />
+            </div>
+          )}
           <div style={{ marginTop: "20px" }}>
             <MyButton onClick={() => navigate("/auth")}>Feedback</MyButton>
           </div>
@@ -53,11 +58,6 @@ const Reviews = () => {
               />
             ))}
             <div style={{ width: "100%", height: "1px" }} ref={lastElement} />
-            {isLoading && (
-              <div style={{ height: "100vh" }}>
-                <Circles color="white" />
-              </div>
-            )}
           </div>
         </>
       )}
