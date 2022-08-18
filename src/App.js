@@ -77,12 +77,12 @@ function App() {
         <div ref={firstElement}></div>
         <Navbar setModalState={setModal} />
         <AppRouter setModalState={setModal} />
-        <Modal visible={modal} setVisible={setModal}>
-          <BookingForm setModalState={setModal} />
-        </Modal>
         <CSSTransition in={toTopBtn} timeout={500} mountOnEnter unmountOnExit>
           <ScrollToTop cl="ScrollToTop" />
         </CSSTransition>
+        <Modal visible={modal} setVisible={setModal}>
+          <BookingForm setModalState={setModal} />
+        </Modal>
       </BrowserRouter>
     </Context.Provider>
   );
